@@ -10,6 +10,7 @@ import { SigninDto, SignupDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { ApiBody } from '@nestjs/swagger';
 
 @Injectable({})
 export class AuthService {
@@ -18,6 +19,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly config: ConfigService,
   ) {}
+
+  // @ApiBody({ type: SignupDto })
 
   async signup(dto: SignupDto) {
     if (!/^[a-zA-Z0-9_]+$/.test(dto.username)) {
