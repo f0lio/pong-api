@@ -33,17 +33,16 @@ export class AuthService {
       const user = await this.prisma.user.create({
         data: {
           email: dto.email,
-          password: hash,
+          hash,
           username: dto.username,
-          firstName: dto.firstName,
-          lastName: dto.lastName,
-          middleName: dto.middleName,
-          avatar: dto.avatar,
+          first_name: dto.first_name,
+          last_name: dto.last_name,
+          avatar_url: dto.avatar_url,
         },
         select: {
           id: true,
           email: true,
-          createdAt: true,
+          created_at: true,
         },
       });
       return this.signToken(user);
@@ -77,7 +76,7 @@ export class AuthService {
     if (!user) throw new NotFoundException('User Not Found');
     // if (!user) throw new ForbiddenException('Invalid Password or Username');
 
-    const correctPassword = await bcrypt.compare(dto.password, user.password);
+    const correctPassword = await bcrypt.compare(dto.password, user.hash);
     if (correctPassword == false)
       throw new ForbiddenException('Invalid Password or Username');
     return this.signToken(user);

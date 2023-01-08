@@ -13,12 +13,12 @@ export class UserService {
         select: {
           id: true,
           username: true,
-          firstName: true,
-          middleName: true,
-          lastName: true,
+          first_name: true,
+          last_name: true,
           email: true,
-          avatar: true,
-          createdAt: true,
+          avatar_url: true,
+          cover_url: true,
+          created_at: true,
         },
       });
 

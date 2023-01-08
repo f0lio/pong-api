@@ -1,5 +1,5 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { user as User } from '@prisma/client';
 
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
@@ -14,11 +14,12 @@ export class UserController {
     return user;
   }
 
-  // @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   @Get(':username')
-  getUser(@Req() req) {
+  async getUser(@Req() req) {
     const { username } = req.params;
-    return this.userService.findOne(username);
+    const user = await this.userService.findOne(username);
+    return user;
 
     // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }

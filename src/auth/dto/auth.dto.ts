@@ -22,25 +22,25 @@ export class SignupDto extends AuthDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  firstName: string;
+  first_name: string;
 
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  lastName: string;
+  last_name: string;
+
+  // @ApiProperty({ required: false })
+  // @IsOptional()
+  // @IsNotEmpty()
+  // @IsString()
+  // middle_name: string;
 
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  middleName: string;
-
-  @ApiProperty({ required: false })
-  @IsOptional()
-  @IsNotEmpty()
-  @IsString()
-  avatar: string;
+  avatar_url: string;
 }
 
 // If both exist, priority is given to E-mail

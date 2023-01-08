@@ -20,11 +20,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         id: true,
         email: true,
         username: true,
-        createdAt: true,
-        firstName: true,
-        lastName: true,
-        middleName: true,
-        avatar: true,
+        created_at: true,
+        first_name: true,
+        last_name: true,
+        avatar_url: true,
       },
     });
   }
