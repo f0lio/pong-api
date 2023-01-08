@@ -9,10 +9,10 @@ export class ChatService {
   async createMessage(room_id: number, user_id: number, message: string) {
     await this.prismaService.$queryRaw(Prisma.sql`
 			UPDATE room
-			SET count_messages = count_messages + 1
+			SET count_message = count_message + 1
 			WHERE room_id = ${room_id}`);
 
-    return this.prismaService.messages.create({
+    return this.prismaService.message.create({
       data: {
         room_id,
         user_id,
@@ -48,19 +48,19 @@ export class ChatService {
 			users.avatar_url AS "avatar_url",
 			(
 				SELECT message
-				FROM messages
+				FROM message
 				WHERE room_id = receiver.room_id
 				ORDER BY id DESC
 				LIMIT 1
 			) AS "lastMessage",
 			
 			(
-				SELECT COUNT(messages.*)
-				FROM messages
-				WHERE messages.room_id = receiver.room_id
-				AND messages.user_id != receiver.user_id
+				SELECT COUNT(message.*)
+				FROM message
+				WHERE message.room_id = receiver.room_id
+				AND message.user_id != receiver.user_id
 				AND is_read = false
-			)::INTEGER AS "unreadMessagesCount",
+			)::INTEGER AS "unreadMessageCount",
 			
 			room.updated_at AS "lastMessageTime",
 			CASE
@@ -119,12 +119,12 @@ export class ChatService {
   }
 
   findAllMessages() {
-    return this.prismaService.messages.findMany();
+    return this.prismaService.message.findMany();
   }
 
-  findRoomMessages(roomId: number, offset = 0, limit = 20) {
-    // shud load last 20 messages
-    return this.prismaService.messages.findMany({
+  findRoomMessage(roomId: number, offset = 0, limit = 20) {
+    // shud load last 20 message
+    return this.prismaService.message.findMany({
       where: {
         room_id: +roomId,
       },

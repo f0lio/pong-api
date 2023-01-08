@@ -6,9 +6,6 @@ import {
   WebSocketServer,
   ConnectedSocket,
 } from '@nestjs/websockets';
-import { user } from '@prisma/client';
-import { Socket } from 'dgram';
-import { Server } from 'http';
 import { ChatService } from './chat.service';
 import { CreateMessageDto, JoinRoomDto } from './dto/chat_common.dto';
 
@@ -81,7 +78,7 @@ export class ChatGateway {
     }
   }
 
-  @SubscribeMessage('findAllMessage')
+  @SubscribeMessage('findAllMessages')
   findAll() {
     return this.chatService.findAllMessages();
   }

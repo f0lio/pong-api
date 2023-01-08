@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { user as User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { ChatService } from './chat.service';
 import { CreateRoomDto, JoinRoomDto } from './dto/chat_common.dto';
 import { JwtGuard } from '@/auth/guard';
@@ -100,7 +100,7 @@ export class ChatController {
     const isMember = roomMembers.some((member) => member.id === user['id']); //tmp
     if (!isMember)
       throw new UnauthorizedException('You have no access to this room');
-    return await this.chatService.findRoomMessages(roomId);
+    return await this.chatService.findRoomMessage(roomId);
   }
 
   getUserInfo(headers) {

@@ -28,6 +28,7 @@ async function bootstrap() {
       // forbidNonWhitelisted: true,
     }),
   );
+  // await app.listen(process.env.PORT || 3030, 'localhost');
   await app.listen(process.env.PORT || 3030);
 }
 

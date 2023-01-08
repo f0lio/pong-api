@@ -25,7 +25,7 @@ datasource db {
 // }
 
 
-model user {
+model User {
     id Int @id @default(autoincrement())
 
     username String? @unique
@@ -39,24 +39,27 @@ model user {
     isTwoFactorEnabled Boolean? @default(false)
     TwoFactorSecret    String?
 
-    rooms room[]
+    rooms Room[]
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    room_user_rel room_user_rel[]
-    messages      messages[]
+    room_user_rel Room_user_rel[]
+    messages      Message[]
+    
+    followers Follows[] @relation("following")
+    following Follows[] @relation("follower")
 
     @@map("users")
 }
 
-model room {
+model Room {
     id Int @id @default(autoincrement())
 
-    userLink1 user @relation(fields: [owner_id], references: [id])
+    userLink1 User @relation(fields: [owner_id], references: [id])
     owner_id  Int
 
-    room_type    room_type @relation(fields: [room_type_id], references: [id])
+    room_type    Room_type @relation(fields: [room_type_id], references: [id])
     room_type_id Int
 
     count_messages Int? @default(0)
@@ -64,39 +67,40 @@ model room {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    room_user_rel room_user_rel[]
-    messages      messages[]
+    room_user_rel Room_user_rel[]
+    messages      Message[]
+
 }
 
-model room_type {
+model Room_type { //???
     id Int @id @default(autoincrement())
 
     type       String
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
-    room       room[]
+    room       Room[]
 }
 
-model room_user_rel {
+model Room_user_rel {
     id Int @id @default(autoincrement())
 
-    roomLink room @relation(fields: [room_id], references: [id])
+    roomLink Room @relation(fields: [room_id], references: [id])
     room_id  Int
 
-    userLink user @relation(fields: [user_id], references: [id])
+    userLink User @relation(fields: [user_id], references: [id])
     user_id  Int
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 }
 
-model messages {
+model Message {
     id Int @id @default(autoincrement())
 
-    userLink user @relation(fields: [user_id], references: [id])
+    userLink User @relation(fields: [user_id], references: [id])
     user_id  Int
 
-    roomLink room @relation(fields: [room_id], references: [id])
+    roomLink Room @relation(fields: [room_id], references: [id])
     room_id  Int
 
     message String
@@ -105,4 +109,13 @@ model messages {
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
+}
+
+model Follows {
+  follower    User @relation("follower", fields: [followerId], references: [id])
+  followerId  Int
+  following   User @relation("following", fields: [followingId], references: [id])
+  followingId Int
+
+  @@id([followerId, followingId])
 }
